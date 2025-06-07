@@ -2,6 +2,14 @@ import streamlit as st
 from PIL import Image
 import requests
 from io import BytesIO
+
+# Konfigurasi halaman Streamlit
+st.set_page_config(
+    page_title="🚕 Sigma Cabs - Taxi Pricing Analysis",
+    page_icon="🚕",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 # Fungsi untuk menampilkan gambar header
 def display_header_image():
     """Display Sigma Cabs image with responsive design"""
