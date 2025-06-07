@@ -1,5 +1,11 @@
 import streamlit as st
 from PIL import Image
+import pandas as pd
+import numpy as np
+import joblib
+import sys
+import warnings
+warnings.filterwarnings('ignore')
 
 st.set_page_config(
     page_title="🚕 Sigma Cabs - LightGBM Pricing Analysis",
@@ -12,14 +18,6 @@ st.set_page_config(
 image_path = 'Picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
 image = Image.open(image_path)
 st.image(image, use_column_width=True)
-
-import pandas as pd
-import numpy as np
-import os
-import sys
-import joblib
-import warnings
-warnings.filterwarnings('ignore')
 
 python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
 
@@ -137,17 +135,50 @@ with col2:
 # --- INPUT SECTION ---
 st.markdown("## 🎯 Predict Your Taxi Fare")
 
+# --- Sederhanakan pilihan dan tambahkan hint ---
+GENDER_OPTIONS = ["Male", "Female", "Other"]
+GENDER_HINT = "Select your gender for a personalized fare experience."
+
+CAB_TYPE_OPTIONS = ["Economy", "Comfy", "Exclusive"]
+CAB_TYPE_HINT = "Choose your preferred vehicle type: Economy (budget), Comfy (standard), or Exclusive (premium)."
+
+CONFIDENCE_OPTIONS = ["High Confidence", "Medium Confidence", "Low Confidence"]
+CONFIDENCE_HINT = "How confident are you in your lifestyle index? Higher confidence may give more accurate fare."
+
+DEST_OPTIONS = ["Airport", "City Center", "Mall", "University"]
+DEST_HINT = "Pick your destination type for the trip."
+
 # Trip Details
 trip_container = st.container()
 with trip_container:
     st.markdown("### 🚗 Trip Details")
     trip_col1, trip_col2 = st.columns([1, 1])
     with trip_col1:
-        distance_input = st.number_input("🛣️ Distance (km):", min_value=0.1, max_value=100.0, value=5.0, step=0.1, key="distance_input")
-        cab_type_input = st.selectbox("🚙 Vehicle Type:", cab_encoder.classes_.tolist(), key="cab_type_input")
+        distance_input = st.number_input(
+            "🛣️ Distance (km):",
+            min_value=0.1, max_value=100.0, value=5.0, step=0.1,
+            key="distance_input",
+            help="Enter the trip distance in kilometers (e.g., 5.0 km)."
+        )
+        cab_type_input = st.selectbox(
+            "🚙 Vehicle Type:",
+            CAB_TYPE_OPTIONS,
+            key="cab_type_input",
+            help=CAB_TYPE_HINT
+        )
     with trip_col2:
-        destination_input = st.selectbox("📍 Destination:", dest_encoder.classes_.tolist(), key="destination_input")
-        rating_input = st.slider("⭐ Your Rating:", 1, 5, 4, key="rating_input")
+        destination_input = st.selectbox(
+            "📍 Destination:",
+            DEST_OPTIONS,
+            key="destination_input",
+            help=DEST_HINT
+        )
+        rating_input = st.slider(
+            "⭐ Your Rating:",
+            1, 5, 4,
+            key="rating_input",
+            help="How would you rate your overall experience as a customer? (1 = lowest, 5 = highest)"
+        )
 
 # Customer Information
 customer_container = st.container()
@@ -155,23 +186,60 @@ with customer_container:
     st.markdown("### 👤 Customer Information")
     cust_col1, cust_col2 = st.columns([1, 1])
     with cust_col1:
-        months_input = st.number_input("📅 Customer Since (Months):", min_value=0, max_value=120, value=12, key="months_input")
-        lifestyle_input = st.slider("💎 Lifestyle Index:", 1.0, 3.0, 2.0, step=0.1, key="lifestyle_input")
+        months_input = st.number_input(
+            "📅 Customer Since (Months):",
+            min_value=0, max_value=120, value=12,
+            key="months_input",
+            help="How many months have you been a Sigma Cabs customer?"
+        )
+        lifestyle_input = st.slider(
+            "💎 Lifestyle Index:",
+            1.0, 3.0, 2.0, step=0.1,
+            key="lifestyle_input",
+            help="Lifestyle index (1.0 = basic, 3.0 = luxury)."
+        )
     with cust_col2:
-        cancellations_input = st.number_input("❌ Cancellations Last Month:", min_value=0, max_value=10, value=0, key="cancellations_input")
-        confidence_input = st.selectbox("🎯 Service Confidence:", conf_encoder.classes_.tolist(), key="confidence_input")
-        gender_input = st.selectbox("🚻 Gender:", gender_encoder.classes_.tolist(), key="gender_input")
+        cancellations_input = st.number_input(
+            "❌ Cancellations Last Month:",
+            min_value=0, max_value=10, value=0,
+            key="cancellations_input",
+            help="How many times did you cancel a ride last month?"
+        )
+        confidence_input = st.selectbox(
+            "🎯 Service Confidence:",
+            CONFIDENCE_OPTIONS,
+            key="confidence_input",
+            help=CONFIDENCE_HINT
+        )
+        gender_input = st.selectbox(
+            "🚻 Gender:",
+            GENDER_OPTIONS,
+            key="gender_input",
+            help=GENDER_HINT
+        )
 
 # Advanced Pricing Factors
 with st.expander("⚙️ Advanced Pricing Factors (Real-time Input)"):
     st.markdown("**Adjust these real-time factors for maximum precision:**")
     adv_col1, adv_col2, adv_col3 = st.columns([1, 1, 1])
     with adv_col1:
-        traffic_input = st.slider("🚦 Traffic Density:", 0.0, 100.0, 50.0, key="traffic_input")
+        traffic_input = st.slider(
+            "🚦 Traffic Density:", 0.0, 100.0, 50.0,
+            key="traffic_input",
+            help="Estimate the current traffic density (0 = empty road, 100 = jammed)."
+        )
     with adv_col2:
-        demand_input = st.slider("📈 Demand Level:", 0.0, 100.0, 50.0, key="demand_input")
+        demand_input = st.slider(
+            "📈 Demand Level:", 0.0, 100.0, 50.0,
+            key="demand_input",
+            help="Estimate the current demand for cabs (0 = low, 100 = very high)."
+        )
     with adv_col3:
-        weather_input = st.slider("🌧 Weather Impact:", 0.0, 100.0, 30.0, key="weather_input")
+        weather_input = st.slider(
+            "🌧 Weather Impact:", 0.0, 100.0, 30.0,
+            key="weather_input",
+            help="Estimate the weather's impact on your ride (0 = clear, 100 = severe weather)."
+        )
 
 # Mapping input ke feature_names dan ENCODING
 input_data = {
