@@ -1,4 +1,3 @@
-
 import streamlit as st
 from PIL import Image
 
@@ -13,8 +12,6 @@ st.set_page_config(
 image_path = 'Picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
 image = Image.open(image_path)
 st.image(image, use_column_width=True)
-
-# ... lanjutkan dengan kode Streamlit Anda seperti biasa ...
 
 import pandas as pd
 import numpy as np
