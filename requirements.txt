@@ -4,4 +4,4 @@ lightgbm
 pandas
 numpy
 joblib
-PIL
+pillow==8.4.0
