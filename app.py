@@ -217,24 +217,39 @@ st.markdown("""
 # PENTING: Anda HARUS menyesuaikan daftar ini dengan 20 fitur yang digunakan model SVM Anda
 # Ini adalah placeholder jika 'feature_names_svm.pkl' tidak ditemukan.
 
-# --- LOAD MODEL, SCALER, FEATURE NAMES ---
-@st.cache_resource
-def load_lgbm_model_with_scaler():
-    model = joblib.load('Model for Streamlit/lgbm_model.pkl')
-    scaler = joblib.load('Model for Streamlit/scaler_lgbm.pkl')
-    feature_names = joblib.load('Model for Streamlit/feature_names_lgbm.pkl')
-    return model, scaler, feature_names
+# Load model, scaler, feature_names, dan encoder
+model = joblib.load('Model for Streamlit/lgbm_model.pkl')
+scaler = joblib.load('Model for Streamlit/scaler_lgbm.pkl')
+feature_names = joblib.load('Model for Streamlit/feature_names_lgbm.pkl')
+cab_encoder = joblib.load('Model for Streamlit/cab_encoder.pkl')
+dest_encoder = joblib.load('Model for Streamlit/dest_encoder.pkl')
+conf_encoder = joblib.load('Model for Streamlit/conf_encoder.pkl')
 
-model, scaler, feature_names_lgbm = load_lgbm_model_with_scaler()
+# Input user
+input_data = {
+    'Trip_Distance': float(distance_input),
+    'Customer_Rating': float(rating_input),
+    'Customer_Since_Months': int(months_input),
+    'Life_Style_Index': float(lifestyle_input),
+    'Type_of_Cab': str(cab_type_input),
+    'Confidence_Life_Style_Index': str(confidence_input),
+    'Destination_Type': str(destination_input),
+    'Gender': 'Male',
+    'Cancellation_Last_1Month': int(cancellations_input),
+    'Var1': float(traffic_input),
+    'Var2': float(demand_input),
+    'Var3': float(weather_input)
+}
 
-def preprocess_input_lgbm(input_dict, feature_names_lgbm):
-    processed = [float(input_dict.get(f, 0.0)) for f in feature_names_lgbm]
-    arr = np.array(processed).reshape(1, -1)
-    arr_scaled = scaler.transform(arr)
-    return arr_scaled
+# ENCODING KATEGORIKAL
+input_data['Type_of_Cab'] = cab_encoder.transform([input_data['Type_of_Cab']])[0]
+input_data['Destination_Type'] = dest_encoder.transform([input_data['Destination_Type']])[0]
+input_data['Confidence_Life_Style_Index'] = conf_encoder.transform([input_data['Confidence_Life_Style_Index']])[0]
 
-# ... (Sisa fungsi seperti load_sample_data, display_header, dll. tetap sama) ...
-# Fungsi get_surge_category_class dan get_loyalty_class juga tetap sama
+# Susun urutan sesuai feature_names
+X_input = np.array([input_data[f] for f in feature_names]).reshape(1, -1)
+X_input_scaled = scaler.transform(X_input)
+prediction = model.predict(X_input_scaled)
 
 # Load sample data function
 @st.cache_data
