@@ -1,12 +1,20 @@
-import streamlit as st
 
-# HARUS MENJADI COMMAND PERTAMA
+import streamlit as st
+from PIL import Image
+
 st.set_page_config(
     page_title="🚕 Sigma Cabs - LightGBM Pricing Analysis",
     page_icon="🚕",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# Tampilkan gambar banner di bagian paling atas
+image_path = 'picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
+image = Image.open(image_path)
+st.image(image, use_column_width=True)
+
+# ... lanjutkan dengan kode Streamlit Anda seperti biasa ...
 
 import pandas as pd
 import numpy as np
