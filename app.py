@@ -329,96 +329,34 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
 
 st.markdown("""
 <style>
-.watermark-box {
+.footer-container {
     width: 100%;
-    margin: 0 auto 1.1em auto;
-    padding: 1.2em 0.5em 1.1em 0.5em;
-    border-radius: 9px;
-    background: #f5f5f5;
-    text-align: center;
-    border-bottom: 3px solid #bdbdbd;
-    box-shadow: 0 2px 12px rgba(189,189,189,0.08);
-}
-.watermark-title {
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(1.4rem, 3vw, 2.2rem);
-    font-weight: 900;
-    color: #616161;
-    margin-bottom: 0.1em;
-    letter-spacing: 1.3px;
-    text-shadow: 1px 2px 8px rgba(189,189,189,0.12);
-}
-.watermark-sub {
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(1.1rem, 2.3vw, 1.6rem);
-    font-weight: 700;
+    margin: 2em auto 0 auto;
+    padding: 1.1em 0.5em 0.8em 0.5em;
+    border-radius: 10px;
+    background: #fafafa;
     color: #757575;
-    margin-top: 0.2em;
-    letter-spacing: 1.1px;
+    text-align: center;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: 1.1rem;
+    box-shadow: 0 1px 8px rgba(189,189,189,0.06);
+    border-top: 2px solid #e0e0e0;
+}
+.footer-container strong {
+    color: #616161;
 }
 @media (prefers-color-scheme: dark) {
-    .watermark-box {
-        background: #33393f;
-        border-bottom: 3px solid #616161;
+    .footer-container {
+        background: #23272b;
+        color: #bdbdbd;
+        border-top: 2px solid #616161;
     }
-    .watermark-title { color: #eeeeee; }
-    .watermark-sub { color: #bdbdbd; }
+    .footer-container strong { color: #eeeeee; }
 }
 </style>
-<div class="watermark-box">
-    <div class="watermark-title">
-        AI Fare Predict - Powered by <span style="color:#757575;">Advanced LightGBM</span>
-    </div>
-    <div class="watermark-sub">
-        RIZKY WIBOWO KUSUMO MODEL
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-.watermark-box {
-    width: 100%;
-    margin: 0 auto 1.1em auto;
-    padding: 1.2em 0.5em 1.1em 0.5em;
-    border-radius: 9px;
-    background: #f5f5f5;
-    text-align: center;
-    border-bottom: 3px solid #bdbdbd;
-    box-shadow: 0 2px 12px rgba(189,189,189,0.08);
-}
-.watermark-title {
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(1.4rem, 3vw, 2.2rem);
-    font-weight: 900;
-    color: #616161;
-    margin-bottom: 0.1em;
-    letter-spacing: 1.3px;
-    text-shadow: 1px 2px 8px rgba(189,189,189,0.12);
-}
-.watermark-sub {
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(1.1rem, 2.3vw, 1.6rem);
-    font-weight: 700;
-    color: #757575;
-    margin-top: 0.2em;
-    letter-spacing: 1.1px;
-}
-@media (prefers-color-scheme: dark) {
-    .watermark-box {
-        background: #33393f;
-        border-bottom: 3px solid #616161;
-    }
-    .watermark-title { color: #eeeeee; }
-    .watermark-sub { color: #bdbdbd; }
-}
-</style>
-<div class="watermark-box">
-    <div class="watermark-title">
-        AI Fare Predict - Powered by <span style="color:#757575;">Advanced LightGBM</span>
-    </div>
-    <div class="watermark-sub">
-        RIZKY WIBOWO KUSUMO MODEL
-    </div>
+<div class="footer-container">
+    <strong>🚕 Sigma Cabs</strong> &nbsp;|&nbsp; <span>AI Fare Predict</span> &nbsp;|&nbsp; <span>LightGBM Model</span><br>
+    <span>Safe • Reliable • Affordable • 24/7 Available</span><br>
+    <span style="font-size:0.98em;">&copy; 2025 Rizky Wibowo Kusumo</span>
 </div>
 """, unsafe_allow_html=True)
