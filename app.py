@@ -1,17 +1,27 @@
 import streamlit as st
 from PIL import Image
 
+import requests
+from io import BytesIO
+
+# Set the image URL
+image_url = 'https://github.com/rizkywibowk/Sigma-Cabs-Pricing-Analysis/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
+
+# Fetch the image from the URL
+response = requests.get(image_url)
+
+# Open the image using PIL
+image = Image.open(BytesIO(response.content))
+
+# Display the image on Streamlit
+st.image(image, use_column_width=True)
+
 st.set_page_config(
     page_title="🚕 Sigma Cabs - LightGBM Pricing Analysis",
     page_icon="🚕",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-
-# Tampilkan gambar banner di bagian paling atas
-image_path = 'https://github.com/rizkywibowk/Sigma-Cabs-Pricing-Analysis/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
-image = Image.open(image_path)
-st.image(image, use_column_width=True)
 
 import pandas as pd
 import numpy as np
