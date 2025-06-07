@@ -216,44 +216,10 @@ st.markdown("""
 
 # PENTING: Anda HARUS menyesuaikan daftar ini dengan 20 fitur yang digunakan model SVM Anda
 # Ini adalah placeholder jika 'feature_names_svm.pkl' tidak ditemukan.
-DEFAULT_SVM_FEATURE_NAMES_20 = [
-    'Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5',
-    'Feature6', 'Feature7', 'Feature8', 'Feature9', 'Feature10',
-    'Feature11', 'Feature12', 'Feature13', 'Feature14', 'Feature15',
-    'Feature16', 'Feature17', 'Feature18', 'Feature19', 'Feature20'
-]
-# Jika model Anda benar-benar hanya 13 fitur, sesuaikan error message di Gambar 3, atau model SVM Anda.
-# Untuk sekarang, kita akan bekerja dengan asumsi model SVM Anda memang butuh 20 fitur.
-
-def create_svm_fallback_model():
-    """Create a fallback SVM model (SVR for regression) dengan 20 fitur."""
-    feature_names = DEFAULT_SVM_FEATURE_NAMES_20 # Menggunakan 20 fitur
-    
-    model = SVR(kernel='rbf', C=1.0, epsilon=0.1) 
-    
-    np.random.seed(42)
-    X_train = np.random.randn(100, len(feature_names)) # Data dummy dengan 20 fitur
-    y_train = (1.0 + X_train[:, 0] * 0.1 + np.random.normal(0, 0.1, 100)) # Contoh sederhana
-    y_train = np.clip(y_train, 1.0, 3.0)
-    
-    model.fit(X_train, y_train)
-    
-    scaler = StandardScaler()
-    scaler.fit(X_train)
-    
-    final_results = {
-        'r2': 0.80, 
-        'mae': 0.12,
-        'rmse': 0.18,
-        'model_type': 'SVR (Fallback Built-in - 20 Features)'
-    }
-    
-    return model, scaler, feature_names, final_results
 
 # --- LOAD MODEL, SCALER, FEATURE NAMES ---
 @st.cache_resource
 def load_lgbm_model_with_scaler():
-    import joblib
     model = joblib.load('Model for Streamlit/lgbm_model.pkl')
     scaler = joblib.load('Model for Streamlit/scaler_lgbm.pkl')
     feature_names = joblib.load('Model for Streamlit/feature_names_lgbm.pkl')
@@ -261,41 +227,11 @@ def load_lgbm_model_with_scaler():
 
 model, scaler, feature_names_lgbm = load_lgbm_model_with_scaler()
 
-# --- PREPROCESSING ---
 def preprocess_input_lgbm(input_dict, feature_names_lgbm):
     processed = [float(input_dict.get(f, 0.0)) for f in feature_names_lgbm]
     arr = np.array(processed).reshape(1, -1)
     arr_scaled = scaler.transform(arr)
     return arr_scaled
-
-    # Untuk Customer Loyalty Segment (jika ini salah satu dari 20 fitur)
-    # Ini contoh, Anda mungkin punya cara lain untuk menurunkannya
-    months = int(input_dict['Customer_Since_Months'])
-    processed_data['Customer_Loyalty_Segment_Regular'] = 1 if 3 < months <= 12 else 0
-    processed_data['Customer_Loyalty_Segment_VIP'] = 1 if months > 24 else 0
-    # processed_data['Customer_Loyalty_Segment_New'] = 1 if months <=3 else 0
-    # processed_data['Customer_Loyalty_Segment_Loyal'] = 1 if 12 < months <=24 else 0
-
-
-    # Membuat array final berdasarkan feature_names_list_expected (20 fitur)
-    final_feature_values = []
-    for feature_name in feature_names_list_expected:
-        if feature_name in processed_data:
-            final_feature_values.append(processed_data[feature_name])
-        elif feature_name in input_dict: # Jika ada di input_dict tapi belum di processed_data
-            final_feature_values.append(float(input_dict[feature_name]))
-        else:
-            # Fitur tidak ada, beri nilai default (misal 0 atau rata-rata dari training set)
-            # PENTING: Imputasi ini harus konsisten dengan saat training model SVM Anda!
-            # st.warning(f"Feature '{feature_name}' is missing from input and basic processing. Using default 0.0. This might affect prediction accuracy.")
-            final_feature_values.append(0.0) 
-            
-    result_array = np.array(final_feature_values, dtype=np.float64).reshape(1, -1)
-
-    if result_array.shape[1] != len(feature_names_list_expected):
-        raise ValueError(f"Preprocessing resulted in {result_array.shape[1]} features, but {len(feature_names_list_expected)} were expected for the SVM model.")
-    
-    return result_array
 
 # ... (Sisa fungsi seperti load_sample_data, display_header, dll. tetap sama) ...
 # Fungsi get_surge_category_class dan get_loyalty_class juga tetap sama
@@ -383,75 +319,50 @@ if df is not None:
             st.write("Dataset preview not available")
 
 # --- INPUT SECTION ---
+
 st.markdown("## 🎯 Predict Your Taxi Fare")
 
-user_input = {}
-for f in feature_names_lgbm:
-    user_input[f] = st.number_input(f"{f}:", value=0.0)
-
+# --- Trip Details ---
 trip_container = st.container()
-# ... (Input fields sama seperti kode Anda sebelumnya, pastikan nama variabel unik) ...
 with trip_container:
     st.markdown("### 🚗 Trip Details")
     trip_col1, trip_col2 = st.columns([1, 1])
     with trip_col1:
-        distance_input = st.number_input( # Ganti nama variabel agar tidak konflik
-            "🛣️ Distance (km):", 
-            min_value=0.1, 
-            max_value=100.0, 
-            value=5.0, 
-            step=0.1,
-            key="distance_input"
+        distance_input = st.number_input(
+            "🛣️ Distance (km):", min_value=0.1, max_value=100.0, value=5.0, step=0.1, key="distance_input"
         )
-        cab_type_input = st.selectbox( # Ganti nama variabel
-            "🚙 Vehicle Type:", 
-            ['Economy (Micro)', 'Standard (Mini)', 'Premium (Prime)'],
-            key="cab_type_input"
+        cab_type_input = st.selectbox(
+            "🚙 Vehicle Type:", ['Economy (Micro)', 'Standard (Mini)', 'Premium (Prime)'], key="cab_type_input"
         )
     with trip_col2:
-        destination_input = st.selectbox( # Ganti nama variabel
-            "📍 Destination:", 
-            ["Airport", "Business", "Home"],
-            key="destination_input"
+        destination_input = st.selectbox(
+            "📍 Destination:", ["Airport", "Business", "Home"], key="destination_input"
         )
-        rating_input = st.slider( # Ganti nama variabel
-            "⭐ Your Rating:", 
-            1, 5, 4,
-            key="rating_input"
+        rating_input = st.slider(
+            "⭐ Your Rating:", 1, 5, 4, key="rating_input"
         )
 
+# --- Customer Information ---
 customer_container = st.container()
 with customer_container:
     st.markdown("### 👤 Customer Information")
     cust_col1, cust_col2 = st.columns([1, 1])
     with cust_col1:
-        months_input = st.number_input( # Ganti nama variabel
-            "📅 Customer Since (Months):", 
-            min_value=0, 
-            max_value=120, 
-            value=12,
-            key="months_input"
+        months_input = st.number_input(
+            "📅 Customer Since (Months):", min_value=0, max_value=120, value=12, key="months_input"
         )
-        lifestyle_input = st.slider( # Ganti nama variabel
-            "💎 Lifestyle Index:", 
-            1.0, 3.0, 2.0, 
-            step=0.1,
-            key="lifestyle_input"
+        lifestyle_input = st.slider(
+            "💎 Lifestyle Index:", 1.0, 3.0, 2.0, step=0.1, key="lifestyle_input"
         )
     with cust_col2:
-        cancellations_input = st.number_input( # Ganti nama variabel
-            "❌ Cancellations Last Month:", 
-            min_value=0, 
-            max_value=10, 
-            value=0,
-            key="cancellations_input"
+        cancellations_input = st.number_input(
+            "❌ Cancellations Last Month:", min_value=0, max_value=10, value=0, key="cancellations_input"
         )
-        confidence_input = st.selectbox( # Ganti nama variabel
-            "🎯 Service Confidence:", 
-            ['High Confidence', 'Medium Confidence', 'Low Confidence'],
-            key="confidence_input"
+        confidence_input = st.selectbox(
+            "🎯 Service Confidence:", ['High Confidence', 'Medium Confidence', 'Low Confidence'], key="confidence_input"
         )
 
+# --- Advanced Pricing Factors ---
 with st.expander("⚙️ Advanced Pricing Factors (Real-time Input)"):
     st.markdown("**Adjust these real-time factors for maximum precision:**")
     adv_col1, adv_col2, adv_col3 = st.columns([1, 1, 1])
@@ -462,51 +373,45 @@ with st.expander("⚙️ Advanced Pricing Factors (Real-time Input)"):
     with adv_col3:
         weather_input = st.slider("🌧 Weather Impact:", 0.0, 100.0, 30.0, key="weather_input")
 
-if st.button('🔮 Calculate SVM Precision Pricing', type="primary", use_container_width=True):
-    try:
-        input_data = {
-            'Trip_Distance': float(distance_input),
-            'Customer_Rating': float(rating_input),
-            'Customer_Since_Months': int(months_input),
-            'Life_Style_Index': float(lifestyle_input),
-            'Type_of_Cab': str(cab_type_input),
-            'Confidence_Life_Style_Index': str(confidence_input),
-            'Destination_Type': str(destination_input), 
-            'Gender': 'Male', 
-            'Cancellation_Last_1Month': int(cancellations_input),
-            'Var1': float(traffic_input), 
-            'Var2': float(demand_input),
-            'Var3': float(weather_input)
-            # PENTING: Tambahkan fitur lain di sini jika 20 fitur SVM Anda berbeda
-            # Misal: 'Feature14': default_value_14, ... 'Feature20': default_value_20
-        }
-        
-        processed_array = preprocess_input_data_robust(input_data, feature_names_list_for_svm)
-        
-        if scaler: # Hanya transform jika scaler ada dan sudah di-fit
-            scaled_input = scaler.transform(processed_array)
-        else:
-            scaled_input = processed_array
+# --- Input Mapping ke Feature Model (SUSUN SESUAI feature_names_lgbm) ---
+input_data = {
+    'Trip_Distance': float(distance_input),
+    'Customer_Rating': float(rating_input),
+    'Customer_Since_Months': int(months_input),
+    'Life_Style_Index': float(lifestyle_input),
+    'Type_of_Cab': str(cab_type_input),
+    'Confidence_Life_Style_Index': str(confidence_input),
+    'Destination_Type': str(destination_input),
+    'Gender': 'Male',  # Bisa diganti dengan input jika diperlukan
+    'Cancellation_Last_1Month': int(cancellations_input),
+    'Var1': float(traffic_input),
+    'Var2': float(demand_input),
+    'Var3': float(weather_input)
+    # Tambahkan fitur lain jika ada di feature_names_lgbm
+}
 
-        prediction_result = model.predict(scaled_input)
-        surge = float(prediction_result[0])
-        surge = max(1.0, min(3.0, surge))
-        
-        prediction_html = """
+# --- PREDICTION BUTTON ---
+if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
+    try:
+        # Pastikan mapping input_data ke feature_names_lgbm sudah lengkap!
+        X_input = preprocess_input_lgbm(input_data, feature_names_lgbm)
+        prediction = model.predict(X_input)
+        fare = float(prediction[0])
+
+        # --- Visualisasi Hasil ---
+        st.markdown("""
         <div class="prediction-box">
-            <h2>🎯 Advanced SVM Prediction</h2>
-            <h1>{:.2f}x</h1>
-            <p>Powered by {} - Support Vector Machine Precision AI</p>
+            <h2>💰 Predicted Fare</h2>
+            <h1>${:.2f}</h1>
+            <p>Powered by LightGBM + Scaler</p>
         </div>
-        """.format(surge, MODEL_SOURCE.upper())
-        st.markdown(prediction_html, unsafe_allow_html=True)
-        
-        # Tampilan hasil lainnya (metric cards, dll.)
-        # ... (Kode tampilan hasil seperti di versi sebelumnya, pastikan variabelnya sesuai) ...
+        """.format(fare), unsafe_allow_html=True)
+
         st.markdown("### 📊 Detailed Analysis Results")
         result_col1, result_col2, result_col3 = st.columns([1, 1, 1])
-        
+
         with result_col1:
+            surge = fare / max(1.0, float(distance_input) * 2.5)  # Contoh estimasi surge
             category = "High" if surge > 2.5 else "Medium" if surge > 1.5 else "Low"
             surge_class = "surge-low" if surge <= 1.5 else "surge-medium" if surge <= 2.5 else "surge-high"
             surge_html = """
@@ -516,9 +421,9 @@ if st.button('🔮 Calculate SVM Precision Pricing', type="primary", use_contain
                 <p><strong>Multiplier:</strong> {:.2f}x</p>
                 <p><strong>Distance:</strong> {} km</p>
             </div>
-            """.format(surge_class, category, surge, distance_input) # Gunakan distance_input
+            """.format(surge_class, category, surge, distance_input)
             st.markdown(surge_html, unsafe_allow_html=True)
-            
+
         with result_col2:
             loyalty = "VIP" if months_input > 24 else "Loyal" if months_input > 12 else "Regular" if months_input > 3 else "New"
             loyalty_html = """
@@ -528,12 +433,12 @@ if st.button('🔮 Calculate SVM Precision Pricing', type="primary", use_contain
                 <p><strong>Rating:</strong> {}/5.0 ⭐</p>
                 <p><strong>Since:</strong> {} months</p>
             </div>
-            """.format(loyalty, rating_input, months_input) # Gunakan variabel input yang benar
+            """.format(loyalty, rating_input, months_input)
             st.markdown(loyalty_html, unsafe_allow_html=True)
-            
+
         with result_col3:
             base_fare = 10.0
-            distance_cost_val = float(distance_input) * 2.5 # Gunakan variabel input yang benar
+            distance_cost_val = float(distance_input) * 2.5
             surge_additional = (distance_cost_val * (surge - 1))
             total_fare = base_fare + distance_cost_val + surge_additional
             fare_html = """
@@ -549,11 +454,11 @@ if st.button('🔮 Calculate SVM Precision Pricing', type="primary", use_contain
 
     except Exception as e:
         error_msg = str(e)
-        st.error("❌ Advanced prediction error: {}".format(error_msg))
+        st.error("❌ Prediction error: {}".format(error_msg))
         st.markdown("""
         <div class="prediction-box">
             <h2>🎯 Fallback Pricing</h2>
-            <h1>1.50x</h1>
+            <h1>$15.00</h1>
             <p>Using simplified algorithm</p>
         </div>
         """, unsafe_allow_html=True)
@@ -652,14 +557,14 @@ footer_container = st.container()
 with footer_container:
     st.markdown("---")
     
-    model_status_text = '🤖 Advanced SVM Model' if MODEL_SOURCE == 'svm_model.pkl' else '⚡ Fallback SVM Model'
+    model_status_text = '🤖 Advanced LighGBM Model' if MODEL_SOURCE == 'svm_model.pkl' else '⚡ Fallback LightGBM Model'
     footer_html = """
     <div class="footer-container" style="text-align: center; padding: clamp(1.5rem, 4vw, 2rem); 
                border-radius: 15px; margin-top: 1.5rem;">
         <h3 style="margin: 0; font-size: clamp(1.3rem, 5vw, 2rem);">🚕 Sigma Cabs - Powered by RIZKY WIBOWO KUSUMO</h3>
         <p style="margin: 1rem 0; font-size: clamp(1rem, 3vw, 1.2rem);">Safe • Reliable • Affordable • 24/7 Available</p>
         <p style="margin: 0; font-size: clamp(0.9rem, 2.5vw, 1rem);">
-            <strong>Python {} | {} | 🌱 Eco-Green Theme</strong>
+            <strong>Python {} | {} | 🌱 Mobile Optimized</strong>
         </p>
     </div>
     """.format(python_version, model_status_text)
