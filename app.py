@@ -327,14 +327,51 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
         </div>
         """, unsafe_allow_html=True)
 
-st.markdown("---")
-footer_html = f"""
-<div class="footer-container" style="text-align: center; padding: clamp(1.5rem, 4vw, 2rem); border-radius: 15px; margin-top: 1.5rem;">
-    <h3 style="margin: 0; font-size: clamp(1.3rem, 5vw, 2rem);">RIZKY WIBOWO KUSUMO AI MODEL - Powered by LightGBM</h3>
-    <p style="margin: 1rem 0; font-size: clamp(1rem, 3vw, 1.2rem);">Safe • Reliable • Affordable • 24/7 Available</p>
-    <p style="margin: 0; font-size: clamp(0.9rem, 2.5vw, 1rem);">
-        <strong>Python {python_version} | Advanced LightGBM Model | 🌱 All Device Optimized</strong>
-    </p>
+st.markdown("""
+<style>
+.watermark-header {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: clamp(2.1rem, 4vw, 2.9rem);
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 0.15em;
+    color: #1b5e20;
+    text-shadow: 0 2px 8px rgba(76,175,80,0.10);
+    border-bottom: 3px solid #4caf50;
+    padding-bottom: 0.3em;
+    background: linear-gradient(90deg,#e8f5e9 60%,#f1f8e9 100%);
+}
+.watermark-tagline {
+    text-align: center;
+    font-size: 1.18rem;
+    font-weight: 500;
+    color: #388e3c;
+    margin-top: 0.1em;
+    margin-bottom: 0.2em;
+    letter-spacing: 0.2px;
+}
+.watermark-meta {
+    text-align: center;
+    font-size: 1rem;
+    color: #444;
+    margin-top: 0.15em;
+    margin-bottom: 0.3em;
+}
+@media (prefers-color-scheme: dark) {
+    .watermark-header {color: #e8f5e9; border-bottom: 3px solid #81c784; background: linear-gradient(90deg,#263238 60%,#37474f 100%);}
+    .watermark-tagline {color: #a5d6a7;}
+    .watermark-meta {color: #cfd8dc;}
+}
+</style>
+
+<div class="watermark-header">
+    RIZKY WIBOWO KUSUMO AI MODEL <span style="color:#4caf50;">– Powered by LightGBM</span>
 </div>
-"""
-st.markdown(footer_html, unsafe_allow_html=True)
+<div class="watermark-tagline">
+    🚕 Safe • Reliable • Affordable • <span style="color:#43a047;">24/7 Available</span>
+</div>
+<div class="watermark-meta">
+    <b>Python 3.9</b> | <b>Advanced LightGBM Model</b> <span style="font-size:1.2em;">🌱</span> <span style="color:#43a047;">All Device Optimized</span>
+</div>
+""", unsafe_allow_html=True)
