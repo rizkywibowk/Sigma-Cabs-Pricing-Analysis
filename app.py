@@ -1,12 +1,17 @@
 import streamlit as st
+from PIL import Image
 
-# HARUS MENJADI COMMAND PERTAMA
 st.set_page_config(
     page_title="🚕 Sigma Cabs - LightGBM Pricing Analysis",
     page_icon="🚕",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# Tampilkan gambar banner di bagian paling atas
+image_path = 'picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
+image = Image.open(image_path)
+st.image(image, use_column_width=True)
 
 import pandas as pd
 import numpy as np
@@ -16,10 +21,9 @@ import joblib
 import warnings
 warnings.filterwarnings('ignore')
 
-# Cek versi Python
 python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
 
-# Enhanced CSS hijau daun cerah (copy dari paste.txt Anda)
+# Enhanced CSS hijau daun cerah
 st.markdown("""
 <style>
     :root {
@@ -162,9 +166,9 @@ with trip_container:
     trip_col1, trip_col2 = st.columns([1, 1])
     with trip_col1:
         distance_input = st.number_input("🛣️ Distance (km):", min_value=0.1, max_value=100.0, value=5.0, step=0.1, key="distance_input")
-        cab_type_input = st.selectbox("🚙 Vehicle Type:", ['Economy (Micro)', 'Standard (Mini)', 'Premium (Prime)'], key="cab_type_input")
+        cab_type_input = st.selectbox("🚙 Vehicle Type:", cab_encoder.classes_.tolist(), key="cab_type_input")
     with trip_col2:
-        destination_input = st.selectbox("📍 Destination:", ["Airport", "Business", "Home"], key="destination_input")
+        destination_input = st.selectbox("📍 Destination:", dest_encoder.classes_.tolist(), key="destination_input")
         rating_input = st.slider("⭐ Your Rating:", 1, 5, 4, key="rating_input")
 
 # Customer Information
@@ -177,7 +181,7 @@ with customer_container:
         lifestyle_input = st.slider("💎 Lifestyle Index:", 1.0, 3.0, 2.0, step=0.1, key="lifestyle_input")
     with cust_col2:
         cancellations_input = st.number_input("❌ Cancellations Last Month:", min_value=0, max_value=10, value=0, key="cancellations_input")
-        confidence_input = st.selectbox("🎯 Service Confidence:", ['High Confidence', 'Medium Confidence', 'Low Confidence'], key="confidence_input")
+        confidence_input = st.selectbox("🎯 Service Confidence:", conf_encoder.classes_.tolist(), key="confidence_input")
 
 # Advanced Pricing Factors
 with st.expander("⚙️ Advanced Pricing Factors (Real-time Input)"):
@@ -207,9 +211,13 @@ input_data = {
 }
 
 # ENCODING KATEGORIKAL
-input_data['Type_of_Cab'] = cab_encoder.transform([input_data['Type_of_Cab']])[0]
-input_data['Destination_Type'] = dest_encoder.transform([input_data['Destination_Type']])[0]
-input_data['Confidence_Life_Style_Index'] = conf_encoder.transform([input_data['Confidence_Life_Style_Index']])[0]
+try:
+    input_data['Type_of_Cab'] = cab_encoder.transform([input_data['Type_of_Cab']])[0]
+    input_data['Destination_Type'] = dest_encoder.transform([input_data['Destination_Type']])[0]
+    input_data['Confidence_Life_Style_Index'] = conf_encoder.transform([input_data['Confidence_Life_Style_Index']])[0]
+except Exception as e:
+    st.error(f"Encoding error: {e}")
+    st.stop()
 
 # Susun urutan sesuai feature_names
 def preprocess_input_lgbm(input_dict, feature_names_lgbm):
@@ -296,7 +304,7 @@ footer_html = """
     <h3 style="margin: 0; font-size: clamp(1.3rem, 5vw, 2rem);">🚕 Sigma Cabs - Powered by LightGBM</h3>
     <p style="margin: 1rem 0; font-size: clamp(1rem, 3vw, 1.2rem);">Safe • Reliable • Affordable • 24/7 Available</p>
     <p style="margin: 0; font-size: clamp(0.9rem, 2.5vw, 1rem);">
-        <strong>Python {} | LightGBM Model | 🌱 Eco-Green Theme</strong>
+        <strong>Python {} | LightGBM Model | 🌱 All Device Optimized</strong>
     </p>
 </div>
 """.format(python_version)
