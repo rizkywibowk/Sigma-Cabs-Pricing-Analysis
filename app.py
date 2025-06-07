@@ -330,10 +330,10 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
 st.markdown("---")
 footer_html = f"""
 <div class="footer-container" style="text-align: center; padding: clamp(1.5rem, 4vw, 2rem); border-radius: 15px; margin-top: 1.5rem;">
-    <h3 style="margin: 0; font-size: clamp(1.3rem, 5vw, 2rem);">🚕 Sigma Cabs - Powered by LightGBM</h3>
+    <h3 style="margin: 0; font-size: clamp(1.3rem, 5vw, 2rem);">RIZKY WIBOWO KUSUMO AI MODEL - Powered by LightGBM</h3>
     <p style="margin: 1rem 0; font-size: clamp(1rem, 3vw, 1.2rem);">Safe • Reliable • Affordable • 24/7 Available</p>
     <p style="margin: 0; font-size: clamp(0.9rem, 2.5vw, 1rem);">
-        <strong>Python {python_version} | LightGBM Model | 🌱 Eco-Green Theme</strong>
+        <strong>Python {python_version} | Advanced LightGBM Model | 🌱 All Device Optimized</strong>
     </p>
 </div>
 """
