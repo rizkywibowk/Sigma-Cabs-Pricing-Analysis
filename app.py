@@ -4,7 +4,7 @@ import requests
 from io import BytesIO
 
 # Correct URL to the raw image file
-image_url = 'https://github.com/rizkywibowk/Sigma-Cabs-Pricing-Analysis/tree/main/Picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
+image_url = 'https://raw.github.com/rizkywibowk/Sigma-Cabs-Pricing-Analysis/tree/main/Picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
 
 # Fetch the image from the URL
 response = requests.get(image_url)
