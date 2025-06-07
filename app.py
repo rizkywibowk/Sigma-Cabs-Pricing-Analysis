@@ -334,44 +334,88 @@ st.markdown("""
     margin: 0 auto 1.1em auto;
     padding: 1.2em 0.5em 1.1em 0.5em;
     border-radius: 9px;
-    background: var(--wm-bg, linear-gradient(90deg, #f1f8e9 0%, #e8f5e9 100%));
+    background: #f5f5f5;
     text-align: center;
-    border-bottom: 4px solid #4caf50;
-    box-shadow: 0 2px 12px rgba(76,175,80,0.04);
+    border-bottom: 3px solid #bdbdbd;
+    box-shadow: 0 2px 12px rgba(189,189,189,0.08);
 }
 .watermark-title {
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(1.3rem, 3vw, 2.1rem);
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
     font-weight: 900;
-    color: var(--wm-title, #263238);
-    margin-bottom: 0.15em;
+    color: #616161;
+    margin-bottom: 0.1em;
     letter-spacing: 1.3px;
-    text-shadow: 1px 2px 8px rgba(76,175,80,0.08);
+    text-shadow: 1px 2px 8px rgba(189,189,189,0.12);
 }
 .watermark-sub {
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(1.05rem, 2vw, 1.4rem);
+    font-size: clamp(1.1rem, 2.3vw, 1.6rem);
     font-weight: 700;
-    color: var(--wm-sub, #388e3c);
+    color: #757575;
     margin-top: 0.2em;
     letter-spacing: 1.1px;
 }
 @media (prefers-color-scheme: dark) {
     .watermark-box {
-        --wm-bg: linear-gradient(90deg, #263238 0%, #37474f 100%);
-        border-bottom: 4px solid #81c784;
+        background: #33393f;
+        border-bottom: 3px solid #616161;
     }
-    .watermark-title { --wm-title: #e8f5e9; }
-    .watermark-sub { --wm-sub: #a5d6a7; }
+    .watermark-title { color: #eeeeee; }
+    .watermark-sub { color: #bdbdbd; }
 }
 </style>
 <div class="watermark-box">
     <div class="watermark-title">
-        AI Fare Predict - Powered by <span style="color:#4caf50;">Advanced LightGBM</span>
+        AI Fare Predict - Powered by <span style="color:#757575;">Advanced LightGBM</span>
     </div>
     <div class="watermark-sub">
         RIZKY WIBOWO KUSUMO MODEL
-        AI Fare Predict - Powered by <span style="color:#4caf50;">Advanced LightGBM</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+.watermark-box {
+    width: 100%;
+    margin: 0 auto 1.1em auto;
+    padding: 1.2em 0.5em 1.1em 0.5em;
+    border-radius: 9px;
+    background: #f5f5f5;
+    text-align: center;
+    border-bottom: 3px solid #bdbdbd;
+    box-shadow: 0 2px 12px rgba(189,189,189,0.08);
+}
+.watermark-title {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 900;
+    color: #616161;
+    margin-bottom: 0.1em;
+    letter-spacing: 1.3px;
+    text-shadow: 1px 2px 8px rgba(189,189,189,0.12);
+}
+.watermark-sub {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: clamp(1.1rem, 2.3vw, 1.6rem);
+    font-weight: 700;
+    color: #757575;
+    margin-top: 0.2em;
+    letter-spacing: 1.1px;
+}
+@media (prefers-color-scheme: dark) {
+    .watermark-box {
+        background: #33393f;
+        border-bottom: 3px solid #616161;
+    }
+    .watermark-title { color: #eeeeee; }
+    .watermark-sub { color: #bdbdbd; }
+}
+</style>
+<div class="watermark-box">
+    <div class="watermark-title">
+        AI Fare Predict - Powered by <span style="color:#757575;">Advanced LightGBM</span>
     </div>
     <div class="watermark-sub">
         RIZKY WIBOWO KUSUMO MODEL
