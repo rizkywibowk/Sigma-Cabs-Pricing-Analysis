@@ -1,6 +1,5 @@
 import streamlit as st
 from PIL import Image
-import pandas as pd
 import numpy as np
 import joblib
 import sys
@@ -14,14 +13,14 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Tampilkan gambar banner di bagian paling atas
+# Banner atas
 image_path = 'Picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
 image = Image.open(image_path)
 st.image(image, use_column_width=True)
 
 python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
 
-# CSS netral agar tetap nyaman di light/dark mode Streamlit
+# CSS netral agar tetap nyaman di light/dark mode
 st.markdown("""
 <style>
     .main-header {
@@ -98,7 +97,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Load model, scaler, feature_names, dan encoder
 @st.cache_resource
 def load_artifacts():
     model = joblib.load('Model for Streamlit/lgbm_model.pkl')
@@ -132,23 +130,13 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
-# --- INPUT SECTION ---
 st.markdown("## 🎯 Predict Your Taxi Fare")
 
-# --- Sederhanakan pilihan dan tambahkan hint ---
 GENDER_OPTIONS = ["Male", "Female", "Other"]
-GENDER_HINT = "Select your gender for a personalized fare experience."
-
 CAB_TYPE_OPTIONS = ["Economy", "Comfy", "Exclusive"]
-CAB_TYPE_HINT = "Choose your preferred vehicle type: Economy (budget), Comfy (standard), or Exclusive (premium)."
-
 CONFIDENCE_OPTIONS = ["High Confidence", "Medium Confidence", "Low Confidence"]
-CONFIDENCE_HINT = "How confident are you in your lifestyle index? Higher confidence may give more accurate fare."
-
 DEST_OPTIONS = ["Airport", "City Center", "Mall", "University"]
-DEST_HINT = "Pick your destination type for the trip."
 
-# Trip Details
 trip_container = st.container()
 with trip_container:
     st.markdown("### 🚗 Trip Details")
@@ -164,14 +152,14 @@ with trip_container:
             "🚙 Vehicle Type:",
             CAB_TYPE_OPTIONS,
             key="cab_type_input",
-            help=CAB_TYPE_HINT
+            help="Choose your preferred vehicle type: Economy (budget), Comfy (standard), or Exclusive (premium)."
         )
     with trip_col2:
         destination_input = st.selectbox(
             "📍 Destination:",
             DEST_OPTIONS,
             key="destination_input",
-            help=DEST_HINT
+            help="Pick your destination type for the trip."
         )
         rating_input = st.slider(
             "⭐ Your Rating:",
@@ -180,7 +168,6 @@ with trip_container:
             help="How would you rate your overall experience as a customer? (1 = lowest, 5 = highest)"
         )
 
-# Customer Information
 customer_container = st.container()
 with customer_container:
     st.markdown("### 👤 Customer Information")
@@ -209,16 +196,15 @@ with customer_container:
             "🎯 Service Confidence:",
             CONFIDENCE_OPTIONS,
             key="confidence_input",
-            help=CONFIDENCE_HINT
+            help="How confident are you in your lifestyle index? Higher confidence may give more accurate fare."
         )
         gender_input = st.selectbox(
             "🚻 Gender:",
             GENDER_OPTIONS,
             key="gender_input",
-            help=GENDER_HINT
+            help="Select your gender for a personalized fare experience."
         )
 
-# Advanced Pricing Factors
 with st.expander("⚙️ Advanced Pricing Factors (Real-time Input)"):
     st.markdown("**Adjust these real-time factors for maximum precision:**")
     adv_col1, adv_col2, adv_col3 = st.columns([1, 1, 1])
@@ -241,7 +227,6 @@ with st.expander("⚙️ Advanced Pricing Factors (Real-time Input)"):
             help="Estimate the weather's impact on your ride (0 = clear, 100 = severe weather)."
         )
 
-# Mapping input ke feature_names dan ENCODING
 input_data = {
     'Trip_Distance': float(distance_input),
     'Customer_Rating': float(rating_input),
@@ -257,7 +242,6 @@ input_data = {
     'Var3': float(weather_input)
 }
 
-# ENCODING KATEGORIKAL
 try:
     input_data['Type_of_Cab'] = cab_encoder.transform([input_data['Type_of_Cab']])[0]
     input_data['Destination_Type'] = dest_encoder.transform([input_data['Destination_Type']])[0]
@@ -267,14 +251,12 @@ except Exception as e:
     st.error(f"Encoding error: {e}")
     st.stop()
 
-# Susun urutan sesuai feature_names
 def preprocess_input_lgbm(input_dict, feature_names_lgbm):
     processed = [input_dict[f] for f in feature_names_lgbm]
     arr = np.array(processed).reshape(1, -1)
     arr_scaled = scaler.transform(arr)
     return arr_scaled
 
-# PREDICTION BUTTON
 if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
     try:
         X_input = preprocess_input_lgbm(input_data, feature_names)
@@ -345,7 +327,6 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
         </div>
         """, unsafe_allow_html=True)
 
-# Footer
 st.markdown("---")
 footer_html = f"""
 <div class="footer-container" style="text-align: center; padding: clamp(1.5rem, 4vw, 2rem); border-radius: 15px; margin-top: 1.5rem;">
