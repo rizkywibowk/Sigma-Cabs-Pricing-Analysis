@@ -3,26 +3,18 @@ from PIL import Image
 import requests
 from io import BytesIO
 
-# Set the raw image URL
+# Correct URL to the raw image file
 image_url = 'https://raw.githubusercontent.com/rizkywibowk/Sigma-Cabs-Pricing-Analysis/main/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
 
 # Fetch the image from the URL
 response = requests.get(image_url)
 
-# Open the image using PIL
-image = Image.open(BytesIO(response.content))
-
-# Display the image on Streamlit
-st.image(image, use_column_width=True)
-
-# Streamlit page configuration
-st.set_page_config(
-    page_title="🚕 Sigma Cabs - LightGBM Pricing Analysis",
-    page_icon="🚕",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
-
+# Ensure the response is successful
+if response.status_code == 200:
+    image = Image.open(BytesIO(response.content))
+    st.image(image, use_column_width=True)
+else:
+    st.error("Failed to load the image. Please check the URL or try a different image.")
 
 import pandas as pd
 import numpy as np
