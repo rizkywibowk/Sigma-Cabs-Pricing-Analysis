@@ -10,26 +10,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-# Fungsi untuk menampilkan gambar header
-def display_header_image():
-    """Display Sigma Cabs image with responsive design"""
-    image_path = 'Picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
-    if os.path.exists(image_path):
-        st.image(image_path, caption='Sigma Cabs - Dedicated to Dedication', use_container_width=True)
-    else:
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                    padding: 2rem; text-align: center; border-radius: 15px; color: white; 
-                    margin-bottom: 1rem; word-wrap: break-word;">
-            <h1 style="margin: 0; font-size: clamp(1.5rem, 4vw, 2.5rem);">🚕 SIGMA CABS</h1>
-            <h3 style="margin: 0.5rem 0; font-size: clamp(1rem, 3vw, 1.5rem);">Dedicated to Dedication</h3>
-            <p style="margin: 0; font-size: clamp(0.8rem, 2vw, 1rem);">Hyderabad & Bangalore</p>
-        </div>
-        """, unsafe_allow_html=True)
 
-display_header_image()
-
-st.markdown('<h1 class="main-header">Taxi Pricing Analysis</h1>', unsafe_allow_html=True)
 
 import pandas as pd
 import numpy as np
@@ -141,6 +122,26 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Fungsi untuk menampilkan gambar header
+def display_header_image():
+    """Display Sigma Cabs image with responsive design"""
+    image_path = 'Picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
+    if os.path.exists(image_path):
+        st.image(image_path, caption='Sigma Cabs - Dedicated to Dedication', use_container_width=True)
+    else:
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    padding: 2rem; text-align: center; border-radius: 15px; color: white; 
+                    margin-bottom: 1rem; word-wrap: break-word;">
+            <h1 style="margin: 0; font-size: clamp(1.5rem, 4vw, 2.5rem);">🚕 SIGMA CABS</h1>
+            <h3 style="margin: 0.5rem 0; font-size: clamp(1rem, 3vw, 1.5rem);">Dedicated to Dedication</h3>
+            <p style="margin: 0; font-size: clamp(0.8rem, 2vw, 1rem);">Hyderabad & Bangalore</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+display_header_image()
+
+st.markdown('<h1 class="main-header">Taxi Pricing Analysis</h1>', unsafe_allow_html=True)
 # Load model, scaler, feature_names, dan encoder
 @st.cache_resource
 def load_artifacts():
