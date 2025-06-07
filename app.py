@@ -287,8 +287,7 @@ def display_header():
 display_header()
 
 st.markdown('<h1 class="main-header">⚡ Fast & Accurate Taxi Fare Prediction with LightGBM</h1>', unsafe_allow_html=True)
-# Load model SVM dengan advanced validation
-model, scaler, feature_names_list_for_svm, final_results, load_status = load_svm_model_with_validation()
+
 
 # About dan Contact
 col1, col2 = st.columns([2, 1])
@@ -297,7 +296,7 @@ with col1:
     <div class="info-box">
         <h3>🌟 About Sigma Cabs</h3>
         <p><strong>Sigma Cabs</strong> provides exceptional cab service. Our pricing is powered by an
-        <strong>Advanced SVM (Support Vector Machine) model</strong> for precise and transparent fares.</p>
+        <strong>Advanced LightGBM model</strong> for precise and transparent fares.</p>
     </div>
     """, unsafe_allow_html=True)
 with col2:
@@ -462,95 +461,6 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
             <p>Using simplified algorithm</p>
         </div>
         """, unsafe_allow_html=True)
-
-# ... (Sisa kode: Information Section, Model Status, Footer - pastikan variabelnya benar) ...
-# Enhanced Information Section
-info_container = st.container()
-with info_container:
-    st.markdown("---")
-    st.markdown("## 💡 Advanced SVM Pricing Technology") 
-    info_col1, info_col2 = st.columns([1, 1])
-    
-    with info_col1:
-        st.markdown("""
-        <div class="info-box">
-            <h3>🔍 Vehicle Categories</h3>
-            <ul>
-                <li><strong>🚗 Economy (Micro):</strong> Budget-friendly</li>
-                <li><strong>🚙 Standard (Mini):</strong> Comfortable</li>
-                <li><strong>🚘 Premium (Prime):</strong> Luxury service</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with info_col2:
-        st.markdown("""
-        <div class="info-box">
-            <h3>🌧 Dynamic Pricing Factors</h3>
-            <ul>
-                <li><strong>🚦 Traffic, 📈 Demand, 🌤 Weather</strong></li>
-            </ul>
-            <h3>🤖 Advanced SVM Technology</h3>
-            <p>Our SVM model analyzes factors for precise fares.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-# PINDAHKAN MODEL STATUS KE SINI - DI ATAS FOOTER
-status_container = st.container()
-with status_container:
-    st.markdown("---")
-    st.markdown("## ⚙️ Advanced System Performance")
-    
-    model_col1, model_col2 = st.columns([1, 1])
-    
-    with model_col1:
-        model_accuracy = final_results.get('r2', 0.0) * 100
-        num_features = len(feature_names_list_for_svm) if feature_names_list_for_svm else 'N/A'
-
-        if MODEL_SOURCE == "svm_model.pkl":
-            status_html = """
-            <div class="model-status success">
-                <h4>✅ Model Status</h4>
-                <p><strong>Source:</strong> svm_model.pkl loaded</p>
-                <p><strong>Type:</strong> Advanced SVM Model</p>
-                <p><strong>Accuracy:</strong> {:.2f}% (approx.)</p>
-                <p><strong>Features:</strong> {}</p>
-            </div>
-            """.format(model_accuracy, num_features)
-            st.markdown(status_html, unsafe_allow_html=True)
-        else:
-            status_html = """
-            <div class="model-status warning">
-                <h4>⚠️ Model Status</h4>
-                <p><strong>Source:</strong> Fallback SVM model</p>
-                <p><strong>Reason:</strong> {}</p>
-                <p><strong>Type:</strong> Simplified SVR</p>
-                <p><strong>Features:</strong> {}</p>
-            </div>
-            """.format(load_status.replace('fallback: ', ''), num_features)
-            st.markdown(status_html, unsafe_allow_html=True)
-    
-    with model_col2:
-        if python_version >= "3.12":
-            python_html = """
-            <div class="model-status warning">
-                <h4>⚠️ Python Environment</h4>
-                <p><strong>Version:</strong> Python {}</p>
-                <p><strong>Status:</strong> Using compatibility mode</p>
-            </div>
-            """.format(python_version)
-            st.markdown(python_html, unsafe_allow_html=True)
-        else:
-            ml_status = 'Available' if ML_AVAILABLE else 'Limited'
-            python_html = """
-            <div class="model-status success">
-                <h4>✅ Python Environment</h4>
-                <p><strong>Version:</strong> Python {}</p>
-                <p><strong>Status:</strong> Optimal performance</p>
-                <p><strong>ML Libraries:</strong> {}</p>
-            </div>
-            """.format(python_version, ml_status)
-            st.markdown(python_html, unsafe_allow_html=True)
 
 # Enhanced Footer
 footer_container = st.container()
