@@ -329,49 +329,51 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
 
 st.markdown("""
 <style>
-.watermark-header {
+.watermark-box {
+    width: 100%;
+    margin: 0 auto 1.1em auto;
+    padding: 1.2em 0.5em 1.1em 0.5em;
+    border-radius: 9px;
+    background: linear-gradient(90deg, #263238 0%, #37474f 100%);
+    text-align: center;
+    border-bottom: 4px solid #4caf50;
+    box-shadow: 0 2px 12px rgba(76,175,80,0.04);
+}
+.watermark-title {
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(2.1rem, 4vw, 2.9rem);
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-align: center;
-    margin-bottom: 0.15em;
-    color: #1b5e20;
-    text-shadow: 0 2px 8px rgba(76,175,80,0.10);
-    border-bottom: 3px solid #4caf50;
-    padding-bottom: 0.3em;
-    background: linear-gradient(90deg,#e8f5e9 60%,#f1f8e9 100%);
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 900;
+    color: #e8f5e9;
+    margin-bottom: 0.1em;
+    letter-spacing: 1.3px;
+    text-shadow: 1px 2px 8px rgba(76,175,80,0.10);
 }
-.watermark-tagline {
-    text-align: center;
-    font-size: 1.18rem;
-    font-weight: 500;
-    color: #388e3c;
-    margin-top: 0.1em;
-    margin-bottom: 0.2em;
-    letter-spacing: 0.2px;
+.watermark-sub {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: clamp(1.1rem, 2.3vw, 1.6rem);
+    font-weight: 700;
+    color: #66bb6a;
+    margin-top: 0.2em;
+    letter-spacing: 1.1px;
 }
-.watermark-meta {
-    text-align: center;
-    font-size: 1rem;
-    color: #444;
-    margin-top: 0.15em;
-    margin-bottom: 0.3em;
-}
-@media (prefers-color-scheme: dark) {
-    .watermark-header {color: #e8f5e9; border-bottom: 3px solid #81c784; background: linear-gradient(90deg,#263238 60%,#37474f 100%);}
-    .watermark-tagline {color: #a5d6a7;}
-    .watermark-meta {color: #cfd8dc;}
+@media (prefers-color-scheme: light) {
+    .watermark-box {
+        background: linear-gradient(90deg, #f1f8e9 0%, #e8f5e9 100%);
+        border-bottom: 4px solid #388e3c;
+    }
+    .watermark-title { color: #263238; }
+    .watermark-sub { color: #388e3c; }
 }
 </style>
-
-<div class="watermark-header">
-    RIZKY WIBOWO KUSUMO AI MODEL <span style="color:#4caf50;">– Powered by LightGBM</span>
+<div class="watermark-box">
+    <div class="watermark-title">
+        AI Fare Predict - Powered by <span style="color:#4caf50;">Advanced LightGBM</span>
+    </div>
+    <div class="watermark-sub">
+        RIZKY WIBOWO KUSUMO MODEL
+    </div>
 </div>
-<div class="watermark-tagline">
-    🚕 Safe • Reliable • Affordable • <span style="color:#43a047;">24/7 Available</span>
-</div>
-<div class="watermark-meta">
+""", unsafe_allow_html=True)
     <b>Python 3.9</b> | <b>Advanced LightGBM Model</b> <span style="font-size:1.2em;">🌱</span> <span style="color:#43a047;">All Device Optimized</span>
 </div>
 """, unsafe_allow_html=True)
