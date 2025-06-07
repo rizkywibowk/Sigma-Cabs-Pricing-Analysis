@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 # Tampilkan gambar banner di bagian paling atas
-image_path = 'picture/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
+image_path = 'https://github.com/rizkywibowk/Sigma-Cabs-Pricing-Analysis/Sigma-cabs-in-hyderabad-and-bangalore.jpg'
 image = Image.open(image_path)
 st.image(image, use_column_width=True)
 
