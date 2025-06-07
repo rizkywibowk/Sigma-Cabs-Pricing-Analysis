@@ -334,35 +334,35 @@ st.markdown("""
     margin: 0 auto 1.1em auto;
     padding: 1.2em 0.5em 1.1em 0.5em;
     border-radius: 9px;
-    background: linear-gradient(90deg, #263238 0%, #37474f 100%);
+    background: var(--wm-bg, linear-gradient(90deg, #f1f8e9 0%, #e8f5e9 100%));
     text-align: center;
     border-bottom: 4px solid #4caf50;
     box-shadow: 0 2px 12px rgba(76,175,80,0.04);
 }
 .watermark-title {
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-size: clamp(1.3rem, 3vw, 2.1rem);
     font-weight: 900;
-    color: #e8f5e9;
-    margin-bottom: 0.1em;
+    color: var(--wm-title, #263238);
+    margin-bottom: 0.15em;
     letter-spacing: 1.3px;
-    text-shadow: 1px 2px 8px rgba(76,175,80,0.10);
+    text-shadow: 1px 2px 8px rgba(76,175,80,0.08);
 }
 .watermark-sub {
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: clamp(1.1rem, 2.3vw, 1.6rem);
+    font-size: clamp(1.05rem, 2vw, 1.4rem);
     font-weight: 700;
-    color: #66bb6a;
+    color: var(--wm-sub, #388e3c);
     margin-top: 0.2em;
     letter-spacing: 1.1px;
 }
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
     .watermark-box {
-        background: linear-gradient(90deg, #f1f8e9 0%, #e8f5e9 100%);
-        border-bottom: 4px solid #388e3c;
+        --wm-bg: linear-gradient(90deg, #263238 0%, #37474f 100%);
+        border-bottom: 4px solid #81c784;
     }
-    .watermark-title { color: #263238; }
-    .watermark-sub { color: #388e3c; }
+    .watermark-title { --wm-title: #e8f5e9; }
+    .watermark-sub { --wm-sub: #a5d6a7; }
 }
 </style>
 <div class="watermark-box">
@@ -374,6 +374,4 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
-    <b>Python 3.9</b> | <b>Advanced LightGBM Model</b> <span style="font-size:1.2em;">🌱</span> <span style="color:#43a047;">All Device Optimized</span>
-</div>
-""", unsafe_allow_html=True)
+
