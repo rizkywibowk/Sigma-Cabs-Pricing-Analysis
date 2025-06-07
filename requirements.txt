@@ -5,3 +5,4 @@ pandas
 numpy
 joblib
 pillow==8.4.0
+requests==2.26.0  # or the latest version
