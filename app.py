@@ -23,49 +23,26 @@ warnings.filterwarnings('ignore')
 
 python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
 
-# Enhanced CSS hijau daun cerah
+# CSS netral agar tetap nyaman di light/dark mode Streamlit
 st.markdown("""
 <style>
-    :root {
-        --primary-color: #FF6B6B;
-        --secondary-color: #2e7d32;
-        --background-color: #e8f5e8;
-        --text-color: #1b5e20;
-        --card-background: rgba(255, 255, 255, 0.9);
-        --border-color: #a5d6a7;
-        --success-color: #2e7d32;
-        --warning-color: #ff8f00;
-        --danger-color: #d32f2f;
-        --info-color: #1976d2;
-        --accent-green: #4caf50;
-        --light-green: #c8e6c9;
-        --dark-green: #1b5e20;
-    }
-    .stApp {
-        background: linear-gradient(135deg, var(--background-color) 0%, color-mix(in srgb, var(--background-color) 85%, white 15%) 25%, color-mix(in srgb, var(--background-color) 90%, var(--accent-green) 10%) 50%, color-mix(in srgb, var(--background-color) 80%, white 20%) 75%, color-mix(in srgb, var(--background-color) 95%, var(--dark-green) 5%) 100%);
-        color: var(--text-color);
-        min-height: 100vh;
-        background-attachment: fixed;
-    }
     .main-header {
         font-size: clamp(2rem, 6vw, 3rem);
         text-align: center;
         margin-bottom: 1.5rem;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.08);
         line-height: 1.2;
         font-weight: 700;
-        color: var(--secondary-color);
-        filter: none !important;
     }
     .prediction-box {
-        background: linear-gradient(135deg, var(--secondary-color) 0%, color-mix(in srgb, var(--secondary-color) 70%, var(--dark-green) 30%) 100%);
+        background: linear-gradient(135deg, #388e3c 0%, #1b5e20 100%);
         padding: clamp(1.5rem, 4vw, 2rem);
         border-radius: 20px;
-        color: white;
+        color: #fff;
         text-align: center;
         margin: 1.5rem 0;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-        border: 2px solid var(--accent-green);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        border: 2px solid #4caf50;
         backdrop-filter: blur(10px);
         position: relative;
         overflow: hidden;
@@ -74,27 +51,27 @@ st.markdown("""
         font-size: clamp(3rem, 10vw, 5rem) !important;
         margin: 1rem 0 !important;
         font-weight: 800 !important;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        color: white;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+        color: #fff;
     }
     .metric-card {
-        background: var(--card-background);
-        backdrop-filter: blur(15px);
+        background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(10px);
         padding: clamp(1rem, 3vw, 1.2rem);
         border-radius: 15px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         margin: 0.8rem 0;
         min-height: clamp(120px, 18vh, 180px);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        color: var(--text-color);
-        border: 1px solid var(--border-color);
+        color: inherit;
+        border: 1px solid #a5d6a7;
         position: relative;
         overflow: hidden;
     }
     .metric-card h4, .metric-card p {
-        color: var(--text-color) !important;
+        color: inherit !important;
     }
     .metric-card::before {
         content: '';
@@ -103,22 +80,22 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--accent-green), var(--secondary-color));
+        background: linear-gradient(90deg, #4caf50, #2e7d32);
     }
     .metric-card:hover {
         transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 15px 40px rgba(46, 125, 50, 0.2);
-        border-color: var(--accent-green);
+        box-shadow: 0 15px 40px rgba(46, 125, 50, 0.13);
+        border-color: #4caf50;
     }
     .info-box, .contact-info, .footer-container {
-        background: var(--card-background);
-        backdrop-filter: blur(15px);
+        background: rgba(255,255,255,0.87);
+        backdrop-filter: blur(10px);
         padding: clamp(1rem, 3vw, 1.2rem);
         border-radius: 15px;
         margin: 0.8rem 0;
-        color: var(--text-color);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-        border: 1px solid var(--border-color);
+        color: inherit;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        border: 1px solid #a5d6a7;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -132,9 +109,10 @@ def load_artifacts():
     cab_encoder = joblib.load('Model for Streamlit/cab_encoder.pkl')
     dest_encoder = joblib.load('Model for Streamlit/dest_encoder.pkl')
     conf_encoder = joblib.load('Model for Streamlit/conf_encoder.pkl')
-    return model, scaler, feature_names, cab_encoder, dest_encoder, conf_encoder
+    gender_encoder = joblib.load('Model for Streamlit/gender_encoder.pkl')
+    return model, scaler, feature_names, cab_encoder, dest_encoder, conf_encoder, gender_encoder
 
-model, scaler, feature_names, cab_encoder, dest_encoder, conf_encoder = load_artifacts()
+model, scaler, feature_names, cab_encoder, dest_encoder, conf_encoder, gender_encoder = load_artifacts()
 
 # Header
 st.markdown('<h1 class="main-header">⚡ Fast & Accurate Taxi Fare Prediction with LightGBM</h1>', unsafe_allow_html=True)
@@ -182,6 +160,7 @@ with customer_container:
     with cust_col2:
         cancellations_input = st.number_input("❌ Cancellations Last Month:", min_value=0, max_value=10, value=0, key="cancellations_input")
         confidence_input = st.selectbox("🎯 Service Confidence:", conf_encoder.classes_.tolist(), key="confidence_input")
+        gender_input = st.selectbox("🚻 Gender:", gender_encoder.classes_.tolist(), key="gender_input")
 
 # Advanced Pricing Factors
 with st.expander("⚙️ Advanced Pricing Factors (Real-time Input)"):
@@ -203,7 +182,7 @@ input_data = {
     'Type_of_Cab': cab_type_input,
     'Confidence_Life_Style_Index': confidence_input,
     'Destination_Type': destination_input,
-    'Gender': 'Male',
+    'Gender': gender_input,
     'Cancellation_Last_1Month': int(cancellations_input),
     'Var1': float(traffic_input),
     'Var2': float(demand_input),
@@ -215,6 +194,7 @@ try:
     input_data['Type_of_Cab'] = cab_encoder.transform([input_data['Type_of_Cab']])[0]
     input_data['Destination_Type'] = dest_encoder.transform([input_data['Destination_Type']])[0]
     input_data['Confidence_Life_Style_Index'] = conf_encoder.transform([input_data['Confidence_Life_Style_Index']])[0]
+    input_data['Gender'] = gender_encoder.transform([input_data['Gender']])[0]
 except Exception as e:
     st.error(f"Encoding error: {e}")
     st.stop()
@@ -233,13 +213,13 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
         prediction = model.predict(X_input)
         fare = float(prediction[0])
 
-        st.markdown("""
+        st.markdown(f"""
         <div class="prediction-box">
             <h2>💰 Predicted Fare</h2>
-            <h1>${:.2f}</h1>
+            <h1>${fare:.2f}</h1>
             <p>Powered by LightGBM + Scaler</p>
         </div>
-        """.format(fare), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
         st.markdown("### 📊 Detailed Analysis Results")
         result_col1, result_col2, result_col3 = st.columns([1, 1, 1])
@@ -248,26 +228,26 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
             surge = fare / max(1.0, float(distance_input) * 2.5)
             category = "High" if surge > 2.5 else "Medium" if surge > 1.5 else "Low"
             surge_class = "surge-low" if surge <= 1.5 else "surge-medium" if surge <= 2.5 else "surge-high"
-            surge_html = """
-            <div class="metric-card {}">
+            surge_html = f"""
+            <div class="metric-card {surge_class}">
                 <h4>📊 Surge Analysis</h4>
-                <p><strong>Category:</strong> {}</p>
-                <p><strong>Multiplier:</strong> {:.2f}x</p>
-                <p><strong>Distance:</strong> {} km</p>
+                <p><strong>Category:</strong> {category}</p>
+                <p><strong>Multiplier:</strong> {surge:.2f}x</p>
+                <p><strong>Distance:</strong> {distance_input} km</p>
             </div>
-            """.format(surge_class, category, surge, distance_input)
+            """
             st.markdown(surge_html, unsafe_allow_html=True)
 
         with result_col2:
             loyalty = "VIP" if months_input > 24 else "Loyal" if months_input > 12 else "Regular" if months_input > 3 else "New"
-            loyalty_html = """
+            loyalty_html = f"""
             <div class="metric-card">
                 <h4>👤 Customer Profile</h4>
-                <p><strong>Loyalty Status:</strong> {}</p>
-                <p><strong>Rating:</strong> {}/5.0 ⭐</p>
-                <p><strong>Since:</strong> {} months</p>
+                <p><strong>Loyalty Status:</strong> {loyalty}</p>
+                <p><strong>Rating:</strong> {rating_input}/5.0 ⭐</p>
+                <p><strong>Since:</strong> {months_input} months</p>
             </div>
-            """.format(loyalty, rating_input, months_input)
+            """
             st.markdown(loyalty_html, unsafe_allow_html=True)
 
         with result_col3:
@@ -275,15 +255,15 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
             distance_cost_val = float(distance_input) * 2.5
             surge_additional = (distance_cost_val * (surge - 1))
             total_fare = base_fare + distance_cost_val + surge_additional
-            fare_html = """
+            fare_html = f"""
             <div class="metric-card">
                 <h4>💰 Precision Fare</h4>
-                <p><strong>Base:</strong> ${:.2f}</p>
-                <p><strong>Distance:</strong> ${:.2f}</p>
-                <p><strong>Surge:</strong> +${:.2f}</p>
-                <p><strong>Total:</strong> ${:.2f}</p>
+                <p><strong>Base:</strong> ${base_fare:.2f}</p>
+                <p><strong>Distance:</strong> ${distance_cost_val:.2f}</p>
+                <p><strong>Surge:</strong> +${surge_additional:.2f}</p>
+                <p><strong>Total:</strong> ${total_fare:.2f}</p>
             </div>
-            """.format(base_fare, distance_cost_val, surge_additional, total_fare)
+            """
             st.markdown(fare_html, unsafe_allow_html=True)
 
     except Exception as e:
@@ -299,13 +279,13 @@ if st.button('🔮 Predict Fare', type="primary", use_container_width=True):
 
 # Footer
 st.markdown("---")
-footer_html = """
+footer_html = f"""
 <div class="footer-container" style="text-align: center; padding: clamp(1.5rem, 4vw, 2rem); border-radius: 15px; margin-top: 1.5rem;">
     <h3 style="margin: 0; font-size: clamp(1.3rem, 5vw, 2rem);">🚕 Sigma Cabs - Powered by LightGBM</h3>
     <p style="margin: 1rem 0; font-size: clamp(1rem, 3vw, 1.2rem);">Safe • Reliable • Affordable • 24/7 Available</p>
     <p style="margin: 0; font-size: clamp(0.9rem, 2.5vw, 1rem);">
-        <strong>Python {} | LightGBM Model | 🌱 Eco-Green Theme</strong>
+        <strong>Python {python_version} | LightGBM Model | 🌱 Eco-Green Theme</strong>
     </p>
 </div>
-""".format(python_version)
+"""
 st.markdown(footer_html, unsafe_allow_html=True)
