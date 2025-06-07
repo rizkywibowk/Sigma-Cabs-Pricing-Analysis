@@ -3,7 +3,7 @@
 Welcome to **Sigma Cabs**!  
 This is a modern, eco-themed Streamlit web app that predicts taxi fares using a highly-optimized **LightGBM** machine learning model.
 
-![Sigma Cabs Banner](https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80)
+![Sigma Cabs Banner] ('Picture\Sigma-cabs-in-hyderabad-and-bangalore.jpg')
 
 ---
 
