@@ -371,7 +371,10 @@ st.markdown("""
     </div>
     <div class="watermark-sub">
         RIZKY WIBOWO KUSUMO MODEL
+        AI Fare Predict - Powered by <span style="color:#4caf50;">Advanced LightGBM</span>
+    </div>
+    <div class="watermark-sub">
+        RIZKY WIBOWO KUSUMO MODEL
     </div>
 </div>
 """, unsafe_allow_html=True)
-
