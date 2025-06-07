@@ -1,0 +1,7 @@
+[theme]
+base="light"  # atau "dark"
+primaryColor="#4caf50"
+backgroundColor="#f0f2f6"
+secondaryBackgroundColor="#ffffff"
+textColor="#1b5e20"
+font="sans serif"
